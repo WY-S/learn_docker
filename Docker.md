@@ -52,7 +52,7 @@ Docker通过隔离机制，可以将服务器利用到极致。
 
 明确几个概念：
 
-1. 镜像(image)：docker镜像好比一个模板，可以通过这个模板来创建容器(container)，一个镜像可以创建多个容器，类似Python中的Class
+1. 镜像(image)：docker镜像好比一个模板，可以通过这个模板来创建容器(container)，一个镜像可以创建多个容器，类似Python中的Class。它包含运行某个软件所需的所有内容，包括代码、运行时、库、环境变量和配置文件。
 
 2. 容器(container)：类似Python中通过Class创建的实例，Object；容器可以理解为一个简易的系统
 
@@ -723,6 +723,16 @@ c2887d35c71d        centos              "/bin/bash"              3 minutes ago  
 
 
 ```
+### 查看容器中进程信息
+```shell
+
+#命令 docker top 容器id
+azureuser@Dockertest:~$ sudo docker top 678a
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                16185               16165               0                   15:18               ?                   00:00:00            /bin/sh -c while true;do 
+echo wenyi;sleep 1;done
+root                16421               16185               0                   15:20               ?                   00:00:00            sleep 1
+```
 
 #### 查看正在运行的容器信息
 
@@ -1052,6 +1062,8 @@ c2887d35c71d        centos              "/bin/bash"              58 minutes ago 
 test.java
 
 # 拷贝是一个手动过程，未来我们使用 -v 卷的技术，可以实现自动同步 /home /home
+
+# 另外linux删除一个文件：sudo rm test.java
 ```
 
 #### 查看内容占用
@@ -1502,9 +1514,9 @@ UnionFS 联合文件系统
 
 ![image-20200618140242423](pic/image-20200618140242423.png)
 
-bootfs：boot file system
+bootfs：boot file system 系统启动需要引导加载。  黑屏--->开机进入系统 的过程为加载
 
-rootfs：root file system
+rootfs：root file system 在bootfs之上，包含的就是典型linux系统中的/dev,/proc,/bin,/etc等标准目录和文件，rootfs就是各种不同的操作系统发行版，比如ubuntu,CentOS等到。
 
 ![image-20200618140907894](pic/image-20200618140907894.png)
 
