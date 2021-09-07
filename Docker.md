@@ -689,7 +689,7 @@ Options:
 ```
 
 ```shell
-whiel true;do echo shen;sleep 
+sudo docker run -d ubuntu /bin/sh -c "while true;do echo wenyi;sleep 1;done" 
 ```
 
 
