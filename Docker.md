@@ -1611,7 +1611,12 @@ docker run -it -v -p
 # -it 交互式进入
 # -v volume卷技术
 # -p 主机端口
+
+sudo docker run -it -v ~/home/ceshi:/home/ centos /bin/bash
+
 ```
+![image](https://user-images.githubusercontent.com/67685322/132950609-3c5f3511-2d6f-44b4-9025-0a9282e7792d.png)
+
 
 ![image-20200618163659503](pic/image-20200618163659503.png)
 
@@ -1682,7 +1687,7 @@ docker run -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d -v /home/mysql/
 
 ### 
 
-DockerFile使用来构建docker镜像的文件
+### DockerFile使用来构建docker镜像的文件
 
 ![image-20200618211547398](pic/image-20200618211547398.png)
 
@@ -1753,6 +1758,9 @@ cat dockerfile1
 
 docker build -f dockerfile1 -t padaxing/centos:1.0 .  # 最后的点很重要 镜像名不能有/
 ```
+![image](https://user-images.githubusercontent.com/67685322/132953487-101634bd-1cee-4d80-ad04-93ffdbd838c7.png)
+
+我这里安装vim失败了，我感觉应该是要加一个 -f强制运行要不然会有选择y/N的选项。
 
 ![image-20200618212936481](pic/image-20200618212936481.png)
 
@@ -2011,6 +2019,29 @@ ifconfig
 可以看到当前这个镜像是怎么一步一步构建起来的
 
 我们平时拿到一个镜像也可以通过这个方法研究一下他是怎么做的
+
+### 上传镜像到docker hub
+
+```shell
+#先登陆
+sudo docker login -u 90304
+```
+![image](https://user-images.githubusercontent.com/67685322/132953932-366a5652-a398-4907-a28e-5738323d5639.png)
+
+```shell
+#docker push提交镜像
+#但是直接这样是会被拒绝的
+sudo docker push wenyitest1/centos:1.0
+
+#因为上传必须是YOUR_DOCKERHUB_NAME/firstimage
+#所以必须是以下image才可以上传
+sudo docker push 90304/centos:2.0
+```
+
+![image](https://user-images.githubusercontent.com/67685322/132953985-0a2f15e6-7852-4346-bf0f-02d85417f2a6.png)
+
+![image](https://user-images.githubusercontent.com/67685322/132954331-0155a00d-61ea-431f-9121-58663a971128.png)
+
 
 ### CMD与ENTRYPOINT
 
