@@ -2240,6 +2240,14 @@ OK
 ![image](https://user-images.githubusercontent.com/67685322/132994161-ef0ac03d-7530-4372-8089-4aab5b134f56.png)
 
 
+
+### 测试
+
+# 我可以在本机用redis-cli工具来连接redis
+![image](https://user-images.githubusercontent.com/67685322/132994641-e56a69ec-2f19-4fa8-ac0f-4d0de3300385.png)
+
+![image](https://user-images.githubusercontent.com/67685322/132994698-18ec338e-e65c-4663-96e0-64d4b9332a26.png)
+
 ### 实战Tomcat镜像
 
 【视频书签，https://www.bilibili.com/video/BV1og4y1q7M4?p=30】
