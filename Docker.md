@@ -2126,14 +2126,118 @@ sudo docker exec -it tomcat03 cat /etc/hosts
 ![image](https://user-images.githubusercontent.com/67685322/132992267-5312ca8a-c013-411f-a289-651da9ece3be.png)
 
 
+### 自定义网络（容器互联）
+```shell
+#查看所有的网络
+docker network ls
+```
+![image](https://user-images.githubusercontent.com/67685322/132992379-9e9d5ee5-2f64-4805-890d-2aebed5568f1.png)
 
-
+bridge:桥接（docker默认）
+none：不配置网络
+host：和宿主机共享网络
+container：容器网络连通（用的少）局限很大
 
 
 ```shell
+#我们直接启动的命令 --net bridge，这个就是我们的docker0
+docker run -d -P --name tomcat03 tomcat
+docker run -d -P --name tomcat03 --net bridge tomcat
+
+# docker0特点：默认，域名不可访问.
+# 我们可以自定义一个网络
+docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet
+
+root@dockertest2:/home/AzureUser# docker network create --driver bridge --subnet 192.168.0.0/16 --gateway 192.168.0.1 mynet
+5314f14aa9c52a45a263d1396a0afaa629bb77839980b188f9127d8cfd6a8136
+
+# 启动tomcat在自己的网络
+docker run -d -P --name tomcat-net-01 --net mynet tomcat
+
+root@dockertest2:/home/AzureUser# docker run -d -P --name tomcat-net-01 --net mynet tomcat
+549bfd0067065e544cb8954c6634a614e824f9d8b90771c2f16ec2acfcb9a368
+```
+![image](https://user-images.githubusercontent.com/67685322/132992590-21efbefe-5b78-4240-949f-1dc9912928d9.png)
+![image](https://user-images.githubusercontent.com/67685322/132992634-57a2e73c-f0ad-4f5d-a705-5922caced5e1.png)
+![image](https://user-images.githubusercontent.com/67685322/132992744-55fe2d3c-c6dc-408e-a120-edd85b82e4a5.png)
+
+## 结论：自定义网络不用使用--link也可以访问另一个container，同时也可以通过域名访问
+
+
+### 网络联通
+```shell
+# 把网络和容器联通，联通之后，就是把tomcat01放到了mynet网络下。||但是网卡之间不能直接连接
+# 一个容器两个ip地址
+docker network connect mynet tomcat01
+```
+# 结论:如果需要跨网络操作别人。需要用docker network connect连通
+
+
+
+#### LAST PART
+### 实战：部署Redis
+
+![image](https://user-images.githubusercontent.com/67685322/132993125-48096bc5-d8e1-418f-8def-3d46ab3ec0ac.png)
+
+# 写个shell脚本运行6个容器
+```shell
+#创建网卡
+docker network create redis --subnet 172.38.0.0/16
+```
+![image](https://user-images.githubusercontent.com/67685322/132993237-bcbab38c-7fd7-412e-a2d6-716aaa632420.png)
+
+```shell
+# 通过脚本创建六个redis配置
+for port in $(seq 1 6); \
+do \
+mkdir -p /mydata/redis/node-${port}/conf
+touch /mydata/redis/node-${port}/conf/redis.conf
+cat << EOF >> /mydata/redis/node-${port}/conf/redis.conf
+port 6379
+bind 0.0.0.0
+cluster-enabled yes
+cluster-config-file nodes.conf
+cluster-node-timeout 5000
+cluster-announce-ip 172.38.0.1${port}
+cluster-announce-port 6379
+cluster-announce-bus-port 16379
+appendonly yes
+EOF
+done
+
+# 通过脚本运行六个redis
+for port in $(seq 1 6);\
+do
+docker run -p 637${port}:6379 -p 1667${port}:16379 --name redis-${port} \
+-v /mydata/redis/node-${port}/data:/data \
+-v /mydata/redis/node-${port}/conf/redis.conf:/etc/redis/redis.conf \
+-d --net redis --ip 172.38.0.1${port} redis:5.0.9-alpine3.11 redis-server /etc/redis/redis.conf 
+done
+
+#进入redis
+docker exec -it redis-1 /bin/sh #redis默认没有bash
+
+root@dockertest2:/mydata/redis/node-1/conf# docker exec -it redis-1 /bin/sh
+/data # ls
+appendonly.aof  nodes.conf
+
+#进行集群开启配置
+redis-cli --cluster create 172.38.0.11:6379 172.38.0.12:6379 172.38.0.13:6379 172.38.0.14:6379 172.38.0.15:6379 172.38.0.16:6379  --cluster-replicas 1
+
+# 设定一个key，存在node-3，是master，也应该存在replica里
+127.0.0.1:6379> set a b
+-> Redirected to slot [15495] located at 172.38.0.13:6379
+OK
+
 
 
 ```
+
+![image](https://user-images.githubusercontent.com/67685322/132993684-f3a76c5e-cb83-498a-b83f-0bb6eb1665a3.png)
+![image](https://user-images.githubusercontent.com/67685322/132993722-1d877d95-3a49-410b-986e-177815dc521b.png)
+![image](https://user-images.githubusercontent.com/67685322/132993834-2e758a40-321b-4e5f-a501-e73f8d41bb75.png)
+
+![image](https://user-images.githubusercontent.com/67685322/132994161-ef0ac03d-7530-4372-8089-4aab5b134f56.png)
 
 
 ### 实战Tomcat镜像
