@@ -2067,6 +2067,75 @@ Docker中许多命令都十分相似，我们需要了解他们的区别，最�
 
 ---
 
+### Docker网络
+
+首先是ip地址,可以看到三个网络
+ip addr
+
+![image](https://user-images.githubusercontent.com/67685322/132990287-941b8281-f64f-4558-aa5c-463ffa891227.png)
+
+
+### 测试
+```shell
+#安装Tomcat
+sudo docker run -d -P --name Tomcat01 tomcat
+```
+
+```shell
+# 这个不work
+sudo docker exec -it Tomcat01 ip addr
+```
+![image](https://user-images.githubusercontent.com/67685322/132990815-667ffbc4-d9a9-4e9a-acfa-02a686293f8d.png)
+
+# 内网地址可以Ping通，其实容器之间也可以Ping通
+![image](https://user-images.githubusercontent.com/67685322/132990881-72d2847b-550f-4893-9857-f55bafc452a7.png)
+
+### 每启动一个dockers容器，dockers就会给dockers容器分配一个ip，我们只要安装了docker，就会有一个docker0，这个是一个桥接模式
+
+```shell
+#看容器内部ip地址
+docker inspect Tomcat01 --format='{{.NetworkSettings.IPAddress}}'
+docker inspect tomcat02 --format='{{.NetworkSettings.IPAddress}}'
+```
+![image](https://user-images.githubusercontent.com/67685322/132991422-3439e69f-76a0-4800-b5fc-c785931197f6.png)
+
+### 模型图
+![image](https://user-images.githubusercontent.com/67685322/132991633-2ab3351b-7dcd-4b2d-96eb-487703a035e9.png)
+# 物理网卡直连docker0，docker0是一个网桥。docker中所有的网络接口都是虚拟的，虚拟的转发效率高。如果容器删了，veth-pair就被删除了
+![image](https://user-images.githubusercontent.com/67685322/132991703-08cb2d2b-efd0-482a-941e-8487bc2ee03f.png)
+
+
+
+### --link
+```shell
+# --link连接成功之后可以使用服务名来ping
+sudo docker run -d -P --name tomcat03 --link Tomcat01 tomcat
+```
+![image](https://user-images.githubusercontent.com/67685322/132991933-f8c6116a-b7af-4ea2-8bdd-c6e0fc340a26.png)
+
+
+```shell
+# 查看网络信息,但是在网络配置中找不到link相关信息
+sudo docker network inspect
+```
+
+```shell
+#--link的本质是在hosts文件里写入一条
+sudo docker exec -it tomcat03 cat /etc/hosts
+```
+![image](https://user-images.githubusercontent.com/67685322/132992267-5312ca8a-c013-411f-a289-651da9ece3be.png)
+
+
+
+
+
+
+```shell
+
+
+```
+
+
 ### 实战Tomcat镜像
 
 【视频书签，https://www.bilibili.com/video/BV1og4y1q7M4?p=30】
