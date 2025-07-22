@@ -473,9 +473,13 @@ docker rmi -f $(docker images -aq) # images -aq就是查所有镜像id，从而�
 
 ![image-20200617102126526](pic/image-20200617102126526.png)
 
+
+
+
+
 ### 容器命令
 
-说明：有了镜像才能创建容器，linux，下载一个centos镜像来测试学习
+说明：**有了镜像才能创建容器**，linux，下载一个centos镜像来测试学习
 
 ```bash
 docker pull centos
