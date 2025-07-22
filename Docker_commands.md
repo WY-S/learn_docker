@@ -72,6 +72,73 @@ Commands:
 
 
 
+```
+un-learn: 
+
+Common Commands:
+
+
+
+
+
+
+
+
+
+Management Commands:
+  builder     Manage builds
+  buildx*     Docker Buildx (Docker Inc., v0.11.2)
+  compose*    Docker Compose (Docker Inc., v2.21.0)
+  container   Manage containers
+  context     Manage contexts
+
+  manifest    Manage Docker image manifests and manifest lists
+  network     Manage networks
+  plugin      Manage plugins
+  system      Manage Docker
+  trust       Manage trust on Docker images
+
+
+Swarm Commands:
+  swarm       Manage Swarm
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+
+
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  events      Get real time events from the server
+  export      Export a container's filesystem as a tar archive
+
+  import      Import the contents from a tarball to create a filesystem image
+
+
+  load        Load an image from a tar archive or STDIN
+
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  rename      Rename a container
+
+
+
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+
+
+
+
+
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  wait        Block until one or more containers stop, then print their exit codes
+
+
+
+
+
+
+```
+
 
 
 

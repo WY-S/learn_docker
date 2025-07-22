@@ -26,3 +26,57 @@ docker run [可选参数] image
 	-p 容器端口
 	
 -p 随机指定端口
+
+
+docker cp e248a48b629c:/home/test.java /home/azureuser/myfiles
+
+
+cp -r webapps.dist/* webapps
+
+docker run -it -p 8080:8080 tomcat:11.0
+
+docker exec -it eb825c678da3 /bin/bash
+
+
+docker commit -a="Wenyi" -m="mytomcat" eb825c678da3 wenyistomcat:1.0
+
+
+
+docker run -it -v /home/azureuser/ceshi:/home/ centos:7 /bin/bash
+
+
+docker run -d -p 3310:3306 -v /home/mysql/conf:/etc/mysql/conf.d -v /home/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql01 mysql:5.7
+
+
+docker run -it d99bf1950fae /bin/bash
+
+
+docker inspect 49b826cbd6ab
+
+
+"Mounts": [
+            {
+                "Type": "volume",
+                "Name": "cfba58bd34ef9c070f5451bdbab5be6c3b3f815056eeabbe675875f4a5862b61",
+                "Source": "/var/lib/docker/volumes/cfba58bd34ef9c070f5451bdbab5be6c3b3f815056eeabbe675875f4a5862b61/_data",
+                "Destination": "volume01",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "volume",
+                "Name": "b6839c1c5a5e33c1d9672e06e34b2bae09bf0872b2317221b19472f0196adac6",
+                "Source": "/var/lib/docker/volumes/b6839c1c5a5e33c1d9672e06e34b2bae09bf0872b2317221b19472f0196adac6/_data",
+                "Destination": "volume02",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+
+
+
+
