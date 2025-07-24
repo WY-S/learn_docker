@@ -79,4 +79,17 @@ docker inspect 49b826cbd6ab
 
 
 
+docker push wenyis/wenyi/centos:2.0
+docker tag d99bf1950fae wenyis/wenyi/centos:2.0
 
+docker tag 361455be633d wenyis/wenyistomcat:2.0
+docker push wenyis/wenyistomcat:2.0
+
+
+docker run -d -P --name tomcat02 tomcat
+
+docker exec -it tomcat03 ping tomcat02
+
+docker run -d -P --name tomcat03 --link tomcat02 tomcat
+
+docker exec -it tomcat02 cat /etc/hosts
