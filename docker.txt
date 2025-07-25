@@ -1,6 +1,12 @@
-docker
 
+myvm
 ssh azureuser@20.62.165.173
+wenyivm1
+ssh azureuser@172.203.227.31
+wenyivm2
+ssh azureuser@172.206.225.186
+redis
+ssh azureuser@20.55.77.23
 
 docker version
 
@@ -93,3 +99,34 @@ docker exec -it tomcat03 ping tomcat02
 docker run -d -P --name tomcat03 --link tomcat02 tomcat
 
 docker exec -it tomcat02 cat /etc/hosts
+====================
+k8s
+
+wget https://github.com/containerd/containerd/releases/download/v1.6.39/containerd-1.6.39-linux-amd64.tar.gz
+
+tar Cxzvf /usr/local containerd-1.6.39-linux-amd64.tar.gz
+
+
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.17/cri-dockerd-0.3.17.amd64.tgz
+tar xf cri-dockerd-0.3.17.amd64.tgz
+mv cri-dockerd/cri-dockerd /usr/local/bin/
+cri-dockerd --version
+
+
+
+kubeadm init \
+--control-plane-endpoint=k8s-master \
+--apiserver-advertise-address=10.1.0.9 \
+--pod-network-cidr=10.244.0.0/16 \
+--service-cidr=10.96.0.0/12 \
+--cri-socket=unix:///var/run/cri-dockerd.sock \
+--upload-certs \
+--v=9
+
+
+
+
+
+
+
+
